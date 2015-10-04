@@ -43,11 +43,13 @@ public class MainPlayer {
 	BackgroundTask task;
 	private String currentTask = null;
 	JButton forwardBtn, backwardBtn;
+	JButton pauseBtn;
 	private static JProgressBar bar = null;
 	File audio;
 	File videoFile;
 	boolean AudioChosen = false;
-	
+	boolean isPaused = false;
+
 	public static void main(final String[] args) {
 
 		SwingUtilities.invokeLater(new Runnable() {
@@ -96,15 +98,15 @@ public class MainPlayer {
 		frame.setVisible(true);
 
 		//=====Playback panel======
-		
+
 		JPanel playbackControls = new JPanel(new GridBagLayout());
 		GridBagConstraints playbackConstraints = new GridBagConstraints();
 		playbackConstraints.gridx = 0;
 		playbackConstraints.gridy = 0;
 		playbackConstraints.gridwidth = 8;
 		bottomPanel.add(playbackControls, playbackConstraints);
-		
-		
+
+
 		bar = new JProgressBar(0, 100);//Min & Max
 		bar.setValue(0);
 		bar.setStringPainted(true);
@@ -118,32 +120,32 @@ public class MainPlayer {
 				BackgroundProgressBar barTask = new BackgroundProgressBar(video, bar);
 				barTask.execute();
 			}
-			
+
 		});
 		timer.start();
 		bar.addMouseListener(new MouseAdapter() {            
-		    public void mouseClicked(MouseEvent e) {
-		       int value = bar.getValue();
-		       //Fine the mouse position
-		       int mouseX = e.getX();
+			public void mouseClicked(MouseEvent e) {
+				int value = bar.getValue();
+				//Fine the mouse position
+				int mouseX = e.getX();
 
-		       //Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
-		       int progressBarVal = (int)Math.round(((double)mouseX / (double)bar.getWidth()) * bar.getMaximum());
+				//Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
+				int progressBarVal = (int)Math.round(((double)mouseX / (double)bar.getWidth()) * bar.getMaximum());
 
-		       bar.setValue(progressBarVal);
-		       int videoLength = (int) video.getLength();
-		       int progressVideo = (videoLength * progressBarVal) / 100;
-		      // System.out.println((float) progressBarVal / 100);
-		       //System.out.println(progressBarVal);
-		       //System.out.println(videoLength);
-		       //System.out.println(progressVideoVal);
-		       video.setPosition(progressVideo);
-		  }                                     
+				bar.setValue(progressBarVal);
+				int videoLength = (int) video.getLength();
+				int progressVideo = (videoLength * progressBarVal) / 100;
+				// System.out.println((float) progressBarVal / 100);
+				//System.out.println(progressBarVal);
+				//System.out.println(videoLength);
+				//System.out.println(progressVideoVal);
+				video.setPosition(progressVideo);
+			}                                     
 		});
-		
-		
-		
-	      
+
+
+
+
 		//=====Playback controls=====
 		//The button to choose the video file
 		JButton FileChooserBtn = new JButton("Choose Video");
@@ -195,7 +197,7 @@ public class MainPlayer {
 		con.gridx = 1;
 		playbackControls.add(backwardBtn, con);
 		//Play button to play the video and stop the fast-forward and fast-backward
-		JButton PlayBtn = new JButton("Play");
+		final JButton PlayBtn = new JButton("Play");
 		PlayBtn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent c){
@@ -214,18 +216,30 @@ public class MainPlayer {
 								video.stop();
 							}
 						});
-						
+
 					} else {
 						backwardBtn.setEnabled(true);
 						forwardBtn.setEnabled(true);
-						task.cancel(true);
+						if (task != null){
+							task.cancel(true);
+						}
+						
+						if (isPaused == false){
+							video.pause();
+							isPaused = true;
+							PlayBtn.setText("Pause");
+						} else {
+							video.pause();
+							isPaused = false;
+							PlayBtn.setText("Play");
+						}
+						System.out.println(isPaused);
 					}
+					
+					
 				} else {
 					PlayVideo.noVideoMessage();
 				}
-
-
-
 
 
 			}
@@ -233,6 +247,23 @@ public class MainPlayer {
 		});
 		con.gridx = 2;
 		playbackControls.add(PlayBtn, con);
+
+		JButton pauseBtn = new JButton("Pause");
+		pauseBtn.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (FileChosen == true){
+					if (running == true){
+						video.pause();
+					}
+
+				}
+			}
+
+		});
+		con.gridx = 5;
+		playbackControls.add(pauseBtn, con);
 		//forward button to fast-forward through the video
 		forwardBtn = new JButton(">>");
 		forwardBtn.addActionListener(new ActionListener(){
@@ -425,7 +456,7 @@ public class MainPlayer {
 						AudioChosen = true;
 						audio = OpenAudio.getAudioFile();
 						JOptionPane nameOption = new JOptionPane();
-						
+
 						String videoName = videoFile.getPath();
 						String audioName = audio.getPath();
 						while (true){
