@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.Panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -41,7 +43,7 @@ public class MainPlayer {
 	BackgroundTask task;
 	private String currentTask = null;
 	JButton forwardBtn, backwardBtn;
-	
+	private static JProgressBar bar = null;
 	File audio;
 	File videoFile;
 	boolean AudioChosen = false;
@@ -89,7 +91,7 @@ public class MainPlayer {
 
 		frame.setContentPane(contentPane);
 		frame.setLocation(100, 100);
-		frame.setSize(1050, 600);
+		frame.setSize(1050, 900);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
@@ -103,19 +105,45 @@ public class MainPlayer {
 		bottomPanel.add(playbackControls, playbackConstraints);
 		
 		
-		JProgressBar bar = new JProgressBar(0,100);
-        bar.setStringPainted(true);
-        playbackConstraints.gridx = 3;
-		playbackConstraints.gridy = 3;
-        bottomPanel.add(bar,playbackConstraints);
-        
-      //=====Commentary panel======
-        JPanel CommentaryControls = new JPanel(new GridBagLayout());
-		GridBagConstraints CommentaryConstraints = new GridBagConstraints();
-		CommentaryConstraints.gridx = 0;
-		CommentaryConstraints.gridy = 0;
-		CommentaryConstraints.gridwidth = 8;
-		bottomPanel.add(CommentaryControls, CommentaryConstraints);
+		bar = new JProgressBar(0, 100);//Min & Max
+		bar.setValue(0);
+		bar.setStringPainted(true);
+		playbackConstraints.gridx = 0;
+		playbackConstraints.gridy = 2;
+		playbackControls.add(bar,playbackConstraints);
+		Timer timer = new Timer(1000, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BackgroundProgressBar barTask = new BackgroundProgressBar(video, bar);
+				barTask.execute();
+			}
+			
+		});
+		timer.start();
+		bar.addMouseListener(new MouseAdapter() {            
+		    public void mouseClicked(MouseEvent e) {
+		       int value = bar.getValue();
+		       //Fine the mouse position
+		       int mouseX = e.getX();
+
+		       //Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
+		       int progressBarVal = (int)Math.round(((double)mouseX / (double)bar.getWidth()) * bar.getMaximum());
+
+		       bar.setValue(progressBarVal);
+		       int videoLength = (int) video.getLength();
+		       int progressVideo = (videoLength * progressBarVal) / 100;
+		      // System.out.println((float) progressBarVal / 100);
+		       //System.out.println(progressBarVal);
+		       //System.out.println(videoLength);
+		       //System.out.println(progressVideoVal);
+		       video.setPosition(progressVideo);
+		  }                                     
+		});
+		
+		
+		
+	      
 		//=====Playback controls=====
 		//The button to choose the video file
 		JButton FileChooserBtn = new JButton("Choose Video");
@@ -135,7 +163,7 @@ public class MainPlayer {
 		});
 		GridBagConstraints con = new GridBagConstraints();
 		con.gridx = 0;
-		con.gridy = 0;
+		con.gridy = 1;
 		con.insets = new Insets(5,5,5,5);
 		playbackControls.add(FileChooserBtn, con);
 		//Backward button to fast-backward through the video
@@ -434,7 +462,9 @@ public class MainPlayer {
 
 
 
-
+	public static JProgressBar getProgressBar(){
+		return bar;
+	}
 
 
 	//The background task using the swingworker for the fast-forward and fast-backward functions
@@ -448,7 +478,6 @@ public class MainPlayer {
 		@Override
 		protected Void doInBackground() throws Exception {
 			int videoLength = ((int)videoFile.getLength()) / 2200;
-
 			if (currentTask == ">>"){
 				for(int i = 0; i< videoLength; i++) {
 					videoFile.skip(2000);
