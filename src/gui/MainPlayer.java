@@ -493,7 +493,15 @@ public class MainPlayer {
 		mergebtnConstraints.insets = new Insets(5,5,5,5);
 		bottomPanel.add(mergeAudioVideo, mergebtnConstraints);
 
-
+		//Adding the Jlist to show the differeint audio options
+		JList<String> audioList = new JList<String>(); //give it the array
+		audioList.setBounds(65, 203, 148, 200);
+		JScrollPane pane = new JScrollPane(audioList);
+		GridBagConstraints audioListConstraints = new GridBagConstraints();
+		audioListConstraints.gridy = 2;
+		audioListConstraints.gridx = 1;
+		audioListConstraints.insets = new Insets(5,5,5,5);
+		bottomPanel.add(pane, audioListConstraints);
 	}
 
 
