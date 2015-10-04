@@ -42,14 +42,16 @@ public class MainPlayer {
 	boolean FileChosen = false;
 	BackgroundTask task;
 	private String currentTask = null;
-	JButton forwardBtn, backwardBtn;
+	JButton forwardBtn, backwardBtn, chooseAudioBtn;
 	JButton pauseBtn;
 	private static JProgressBar bar = null;
-	File audio;
+	File audio, audioFile1, audioFile2, audioFile3;
 	File videoFile;
 	boolean AudioChosen = false;
 	boolean isPaused = false;
 	BackgroundProgressBar barTask;
+	String[] audioStringList = new String[3];
+	OpenAudio audio1, audio2, audio3;
 
 	public static void main(final String[] args) {
 
@@ -124,7 +126,7 @@ public class MainPlayer {
 
 		});
 		timer.start();
-		
+
 		bar.addMouseListener(new MouseAdapter() {            
 			public void mouseClicked(MouseEvent e) {
 				//barTask.cancel(true);
@@ -142,8 +144,8 @@ public class MainPlayer {
 				//System.out.println(progressVideoVal);
 				video.setPosition(progressVideo); //the position of the video, makes video jump to this point
 				bar.setValue(progressBarVal);
-				
-				
+
+
 			}                                     
 		});
 
@@ -227,7 +229,7 @@ public class MainPlayer {
 						if (task != null){
 							task.cancel(true);
 						}
-						
+
 						if (isPaused == false){
 							video.pause();
 							isPaused = true;
@@ -240,8 +242,8 @@ public class MainPlayer {
 							//System.out.println(running);
 						}
 					}
-					
-					
+
+
 				} else {
 					PlayVideo.noVideoMessage();
 				}
@@ -502,6 +504,44 @@ public class MainPlayer {
 		audioListConstraints.gridx = 1;
 		audioListConstraints.insets = new Insets(5,5,5,5);
 		bottomPanel.add(pane, audioListConstraints);
+
+		final JButton chooseAudioBtn = new JButton("Choose Audio");
+		chooseAudioBtn.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//audioStringList
+				if (FileChosen == true){
+					int i = 0;
+					JOptionPane audioOption = new JOptionPane();
+					JOptionPane audioMessage = new JOptionPane();
+					String videoName = videoFile.getPath();
+					while (i < 3){
+						if (i == 0){
+							audio1 = new OpenAudio();
+						} else if (i == 1){
+							audio2 = new OpenAudio();
+						} else {
+							audio3 = new OpenAudio();
+						}
+						
+						i++;
+					}
+					if ((audioFile1 = audio1.getAudioFile()) != null){
+						AudioChosen = true;
+						String audioName1 = audioFile1.getPath();
+						audioStringList[0] = audioName1;
+					}
+				}
+			}
+
+		});
+
+		GridBagConstraints chooseAudioBtnConstraints = new GridBagConstraints();
+		chooseAudioBtnConstraints.gridy = 2;
+		chooseAudioBtnConstraints.gridx = 2;
+		chooseAudioBtnConstraints.insets = new Insets(5,5,5,5);
+		bottomPanel.add(chooseAudioBtn, chooseAudioBtnConstraints);
 	}
 
 
