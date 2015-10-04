@@ -49,6 +49,7 @@ public class MainPlayer {
 	File videoFile;
 	boolean AudioChosen = false;
 	boolean isPaused = false;
+	BackgroundProgressBar barTask;
 
 	public static void main(final String[] args) {
 
@@ -117,29 +118,32 @@ public class MainPlayer {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BackgroundProgressBar barTask = new BackgroundProgressBar(video, bar);
+				barTask = new BackgroundProgressBar(video, bar);
 				barTask.execute();
 			}
 
 		});
 		timer.start();
+		
 		bar.addMouseListener(new MouseAdapter() {            
 			public void mouseClicked(MouseEvent e) {
+				//barTask.cancel(true);
 				int value = bar.getValue();
-				//Fine the mouse position
+				//Find the mouse position
 				int mouseX = e.getX();
-
 				//Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
 				int progressBarVal = (int)Math.round(((double)mouseX / (double)bar.getWidth()) * bar.getMaximum());
 
-				bar.setValue(progressBarVal);
-				int videoLength = (int) video.getLength();
-				int progressVideo = (videoLength * progressBarVal) / 100;
+				float progressVideo = (float) progressBarVal / 100;
+				//System.out.println(progressVideo);
 				// System.out.println((float) progressBarVal / 100);
 				//System.out.println(progressBarVal);
 				//System.out.println(videoLength);
 				//System.out.println(progressVideoVal);
-				video.setPosition(progressVideo);
+				video.setPosition(progressVideo); //the position of the video, makes video jump to this point
+				bar.setValue(progressBarVal);
+				
+				
 			}                                     
 		});
 
@@ -228,12 +232,13 @@ public class MainPlayer {
 							video.pause();
 							isPaused = true;
 							PlayBtn.setText("Pause");
+							//System.out.println(running);
 						} else {
 							video.pause();
 							isPaused = false;
 							PlayBtn.setText("Play");
+							//System.out.println(running);
 						}
-						System.out.println(isPaused);
 					}
 					
 					
