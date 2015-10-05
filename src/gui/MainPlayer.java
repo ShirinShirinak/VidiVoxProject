@@ -15,6 +15,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.swing.*;
 
+import org.omg.Messaging.SyncScopeHelper;
 
 import uk.co.caprica.vlcj.binding.LibVlc;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
@@ -495,8 +496,9 @@ public class MainPlayer {
 		mergebtnConstraints.insets = new Insets(5,5,5,5);
 		bottomPanel.add(mergeAudioVideo, mergebtnConstraints);
 
-		//Adding the Jlist to show the differeint audio options
-		JList<String> audioList = new JList<String>(); //give it the array
+		//Adding the Jlist to show the different audio options
+		JList<String> audioList = new JList<String>(audioStringList); //give it the array
+		audioList.setPreferredSize(new Dimension(150, 100));
 		audioList.setBounds(65, 203, 148, 200);
 		JScrollPane pane = new JScrollPane(audioList);
 		GridBagConstraints audioListConstraints = new GridBagConstraints();
@@ -512,11 +514,12 @@ public class MainPlayer {
 			public void actionPerformed(ActionEvent e) {
 				//audioStringList
 				if (FileChosen == true){
-					int i = 0;
-					JOptionPane audioOption = new JOptionPane();
-					JOptionPane audioMessage = new JOptionPane();
-					String videoName = videoFile.getPath();
-					while (i < 3){
+					//JOptionPane audioOption = new JOptionPane();
+					//JOptionPane audioMessage = new JOptionPane();
+					//String videoName = videoFile.getPath();
+					audio1 = new OpenAudio();
+					audioFile1 = audio1.getAudioFile();
+					/*while (i < 3){
 						if (i == 0){
 							audio1 = new OpenAudio();
 						} else if (i == 1){
@@ -526,12 +529,8 @@ public class MainPlayer {
 						}
 						
 						i++;
-					}
-					if ((audioFile1 = audio1.getAudioFile()) != null){
-						AudioChosen = true;
-						String audioName1 = audioFile1.getPath();
-						audioStringList[0] = audioName1;
-					}
+					}*/
+					
 				}
 			}
 
@@ -541,8 +540,44 @@ public class MainPlayer {
 		chooseAudioBtnConstraints.gridy = 2;
 		chooseAudioBtnConstraints.gridx = 2;
 		chooseAudioBtnConstraints.insets = new Insets(5,5,5,5);
+		chooseAudioBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
 		bottomPanel.add(chooseAudioBtn, chooseAudioBtnConstraints);
+		
+		final JButton addAudioBtn = new JButton("Add Audio");
+		addAudioBtn.addActionListener(new ActionListener(){
+			int count = 0;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				
+				if (audioFile1  != null){
+					AudioChosen = true;
+					String audioName1 = audioFile1.getPath();
+					audioStringList[count] = audioName1;
+				}
+				count++;
+				if (count == 3){
+					count = 0;
+					chooseAudioBtn.setEnabled(false);
+					addAudioBtn.setEnabled(false);
+				}
+				//System.out.println(audioFile1.getAbsolutePath());
+				
+				
+			}
+			
+		});
+		
+		//System.out.println(count);
+		GridBagConstraints addAudioBtnConstraints = new GridBagConstraints();
+		addAudioBtnConstraints.gridy = 3;
+		addAudioBtnConstraints.gridx = 1;
+		addAudioBtnConstraints.insets = new Insets(5,5,5,5);
+		addAudioBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
+		bottomPanel.add(addAudioBtn, addAudioBtnConstraints);
+		
 	}
+	
+	
 
 
 
