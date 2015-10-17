@@ -53,24 +53,11 @@ public class MainPlayer {
 	BackgroundProgressBar barTask;
 	String[] audioStringList = new String[3];
 	OpenAudio audio1, audio2, audio3;
+	
 
-	public static void main(final String[] args) {
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				new MainPlayer(args);
-
-			}
-		});
-
-
-
-	}
-
-	private MainPlayer(String[] args) {
+	MainPlayer(String[] args) {
 		//creating the JFrame
-		JFrame frame = new JFrame("MediaPlayer");
+		JFrame frame = new JFrame("VidiVox");
 
 
 		contentPane = new JPanel(new GridBagLayout());
