@@ -1,0 +1,82 @@
+package gui;
+
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.Timer;
+
+import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
+
+public class ProgressPanel extends JPanel{
+	static JProgressBar bar;
+	private static EmbeddedMediaPlayer video;
+	static boolean skipped = false;
+	static int progressBarVal;
+
+	public ProgressPanel(){
+		setLayout(new GridBagLayout());
+
+
+		bar = new JProgressBar(0, 100);//Min & Max
+		bar.setPreferredSize(new Dimension(1000, 20));
+		bar.setValue(0);
+		bar.setStringPainted(true);
+		GridBagConstraints progressConstraints = new GridBagConstraints();
+		progressConstraints.gridx = 0;
+		progressConstraints.gridy = 0;
+		add(bar,progressConstraints);
+
+
+		bar.addMouseListener(new MouseAdapter() {            
+			public void mouseClicked(MouseEvent e) {
+				skipped = true;
+				//barTask.cancel(true);
+				int value = bar.getValue();
+				//Find the mouse position
+				int mouseX = e.getX();
+				//Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
+				progressBarVal = (int)Math.round(((double)mouseX / (double)bar.getWidth()) * bar.getMaximum());
+
+				float progressVideo = (float) progressBarVal / 100;
+				//System.out.println(progressVideo);
+				// System.out.println((float) progressBarVal / 100);
+				//System.out.println(progressBarVal);
+				//System.out.println(videoLength);
+				//System.out.println(progressVideoVal);
+				video.setPosition(progressVideo); //the position of the video, makes video jump to this point
+				//bar.setValue(progressBarVal);
+
+
+			}                                     
+		});
+	}
+
+	public static void setVideo(EmbeddedMediaPlayer Runningvideo){
+		video = Runningvideo;
+		Timer timer = new Timer(100, new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (skipped == false){
+					int i = (int) (video.getTime()/1000);
+					bar.setValue(i);
+				} else {
+					//int i = (int) (video.getTime()/1000);
+					bar.setValue(progressBarVal);
+					skipped = false;
+				}
+			}
+
+		});
+		timer.start();
+	}
+
+
+}

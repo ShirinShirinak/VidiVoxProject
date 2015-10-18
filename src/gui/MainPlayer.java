@@ -35,27 +35,26 @@ import functionality.SayItWithFestival;
  *
  */
 public class MainPlayer {
-	private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
-	EmbeddedMediaPlayer video;
+	//private final EmbeddedMediaPlayerComponent mediaPlayerComponent;
+	public EmbeddedMediaPlayer video;// cp to PBP
 	private JPanel contentPane;
-	boolean play = false;
-	static boolean running = false; 
-	boolean FileChosen = false;
-	BackgroundTask task;
-	private String currentTask = null;
-	JButton forwardBtn, backwardBtn, chooseAudioBtn;
-	JButton pauseBtn;
+	boolean play = false; // cp to PBP
+	static boolean running = false; //cp to PBP
+	boolean FileChosen = false; //copied to PlayBackPanel
+	BackgroundTask task; //cp to PBP
+	private String currentTask = null; //cp to PBP
+	JButton forwardBtn, backwardBtn, chooseAudioBtn;// cp to PBP
+	JButton pauseBtn; //cp to PBP
 	private static JProgressBar bar = null;
 	File audio, audioFile1, audioFile2, audioFile3;
-	File videoFile;
+	File videoFile; //copied to PlayBackPanel
 	boolean AudioChosen = false;
-	boolean isPaused = false;
-	BackgroundProgressBar barTask;
+	boolean isPaused = false; // cp to PBP
 	String[] audioStringList = new String[3];
 	OpenAudio audio1, audio2, audio3;
 	
 
-	MainPlayer(String[] args) {
+	public MainPlayer() {
 		//creating the JFrame
 		JFrame frame = new JFrame("VidiVox");
 
@@ -63,263 +62,35 @@ public class MainPlayer {
 		contentPane = new JPanel(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
-
-
-		Panel topPanel = new Panel(new GridBagLayout());
-		topPanel.setBounds(0, 0, 3000, 2000);
-		JPanel bottomPanel = new JPanel(new GridBagLayout());
-		c.gridheight = 20;
-		c.gridwidth = 30;
+		//new
+		TopPanel topPanel = new TopPanel();
+		BottomPanel bottomPanel = new BottomPanel();
+		//Panel topPanel = new Panel(new GridBagLayout());
+		//topPanel.setBounds(0, 0, 3000, 2000);
+		//JPanel bottomPanel = new JPanel(new GridBagLayout());
+		//c.gridheight = 20;
+		//c.gridwidth = 30;
 		//Splitting the contentsPane into two separate parts
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPanel, bottomPanel);
 		contentPane.add(splitPane);
-		mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
+		//mediaPlayerComponent = new EmbeddedMediaPlayerComponent();
 
-		mediaPlayerComponent.setPreferredSize(new Dimension(1000, 500));
-		topPanel.setPreferredSize(new Dimension(1000, 500));
-		c.gridx = 0;
-		c.gridy = 0;
-		topPanel.add(mediaPlayerComponent, c);
-		topPanel.setSize(500, 500);
-
+		//mediaPlayerComponent.setPreferredSize(new Dimension(1000, 500));
+		//topPanel.setPreferredSize(new Dimension(1000, 500));
+		//c.gridx = 0;
+		//c.gridy = 0;
+		//topPanel.add(mediaPlayerComponent, c);
+		//topPanel.setSize(500, 500);
+		
 		frame.setContentPane(contentPane);
-		frame.setLocation(100, 100);
-		frame.setSize(1050, 900);
+		frame.setLocation(150, 100);
+		frame.setSize(1500, 900);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 
-		//=====Playback panel======
-
-		JPanel playbackControls = new JPanel(new GridBagLayout());
-		GridBagConstraints playbackConstraints = new GridBagConstraints();
-		playbackConstraints.gridx = 0;
-		playbackConstraints.gridy = 0;
-		playbackConstraints.gridwidth = 8;
-		bottomPanel.add(playbackControls, playbackConstraints);
-
-
-		bar = new JProgressBar(0, 100);//Min & Max
-		bar.setValue(0);
-		bar.setStringPainted(true);
-		playbackConstraints.gridx = 0;
-		playbackConstraints.gridy = 2;
-		playbackControls.add(bar,playbackConstraints);
-		Timer timer = new Timer(1000, new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				barTask = new BackgroundProgressBar(video, bar);
-				barTask.execute();
-			}
-
-		});
-		timer.start();
-
-		bar.addMouseListener(new MouseAdapter() {            
-			public void mouseClicked(MouseEvent e) {
-				//barTask.cancel(true);
-				int value = bar.getValue();
-				//Find the mouse position
-				int mouseX = e.getX();
-				//Computes how far along the mouse is relative to the component width then multiply it by the progress bar's maximum value.
-				int progressBarVal = (int)Math.round(((double)mouseX / (double)bar.getWidth()) * bar.getMaximum());
-
-				float progressVideo = (float) progressBarVal / 100;
-				//System.out.println(progressVideo);
-				// System.out.println((float) progressBarVal / 100);
-				//System.out.println(progressBarVal);
-				//System.out.println(videoLength);
-				//System.out.println(progressVideoVal);
-				video.setPosition(progressVideo); //the position of the video, makes video jump to this point
-				bar.setValue(progressBarVal);
-
-
-			}                                     
-		});
-
-
-
-
-		//=====Playback controls=====
-		//The button to choose the video file
-		JButton FileChooserBtn = new JButton("Choose Video");
-		FileChooserBtn.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//Opening the file through OpenFile class
-				new OpenFile();
-				if (OpenFile.getVideoFile() != null){
-					FileChosen = true;
-					videoFile = OpenFile.getVideoFile();
-				}
-
-			}
-
-		});
-		GridBagConstraints con = new GridBagConstraints();
-		con.gridx = 0;
-		con.gridy = 1;
-		con.insets = new Insets(5,5,5,5);
-		playbackControls.add(FileChooserBtn, con);
-		//Backward button to fast-backward through the video
-		backwardBtn = new JButton("<<");
-		backwardBtn.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e){
-
-				if ((running == true) && (FileChosen == true)){
-					//Using the setEnabled to control the user click
-					backwardBtn.setEnabled(false);
-					play = false;
-					//Checks to see if the user decided to fast-forward instead of fast-backward
-					if (currentTask == ">>"){
-						task.cancel(true);
-						backwardBtn.setEnabled(false);
-						forwardBtn.setEnabled(true);
-					}
-					currentTask = "<<";
-					task = new BackgroundTask(video);
-					task.execute();
-				} else {
-					JOptionPane option = new JOptionPane();
-					JOptionPane.showMessageDialog(option, "You need to click on the play button first in order to do fastforward.");
-				}
-			}
-		});
-		con.gridx = 1;
-		playbackControls.add(backwardBtn, con);
-		//Play button to play the video and stop the fast-forward and fast-backward
-		final JButton PlayBtn = new JButton("Play");
-		PlayBtn.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent c){
-				if (FileChosen == true){
-
-					if ((running == false)){
-						play = true;
-						running = true;
-						//Playing the video using the PlayVideo class
-						new PlayVideo(OpenFile.getVideoFile(), mediaPlayerComponent);
-						video = PlayVideo.getVideo();
-						video.addMediaPlayerEventListener(new MediaPlayerEventAdapter(){
-
-							public void finished(MediaPlayer player){
-								running = false;
-								video.stop();
-							}
-						});
-
-					} else {
-						backwardBtn.setEnabled(true);
-						forwardBtn.setEnabled(true);
-						if (task != null){
-							task.cancel(true);
-						}
-
-						if (isPaused == false){
-							video.pause();
-							isPaused = true;
-							PlayBtn.setText("Pause");
-							//System.out.println(running);
-						} else {
-							video.pause();
-							isPaused = false;
-							PlayBtn.setText("Play");
-							//System.out.println(running);
-						}
-					}
-
-
-				} else {
-					PlayVideo.noVideoMessage();
-				}
-
-
-			}
-
-		});
-		con.gridx = 2;
-		playbackControls.add(PlayBtn, con);
-
-		JButton pauseBtn = new JButton("Pause");
-		pauseBtn.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (FileChosen == true){
-					if (running == true){
-						video.pause();
-					}
-
-				}
-			}
-
-		});
-		con.gridx = 5;
-		playbackControls.add(pauseBtn, con);
-		//forward button to fast-forward through the video
-		forwardBtn = new JButton(">>");
-		forwardBtn.addActionListener(new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if ((running == true) && (FileChosen == true)){
-					forwardBtn.setEnabled(false);
-					play = false;
-					//checks to see if the user has decided to fast-backward instead of the fast-forward
-					if (currentTask == "<<"){
-						task.cancel(true);
-						backwardBtn.setEnabled(true);
-						forwardBtn.setEnabled(false);
-					}
-					currentTask = ">>";
-					task = new BackgroundTask(video);
-
-					task.execute();
-
-
-
-				} else {
-					JOptionPane option = new JOptionPane();
-					JOptionPane.showMessageDialog(option, "You need to click on the play button first in order to do fastbackward.");
-				}
-
-
-
-			}
-
-		});
-		con.gridx = 3;
-		playbackControls.add(forwardBtn, con);
-
-
-		//volume button 
-		final JButton volumeBtn = new JButton("Mute");
-		volumeBtn.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e){
-				if (volumeBtn.getText().equals("Mute")){
-
-					video.mute(true);
-					volumeBtn.setText("Volume");
-				} else {
-
-					video.mute(false);
-					volumeBtn.setText("Mute");
-				}
-			}
-		});
-		con.gridx = 4;
-		playbackControls.add(volumeBtn, con);
-
-
-
-
 
 		//==========FESTIVAL COMMENTARY============
-
+/*
 		//Adding a jtxtfield for the text-to-speech user input
 		final JTextField festivalInput1 = new JTextField();
 		//Adding constraints to align the jtextfield
@@ -506,7 +277,7 @@ public class MainPlayer {
 					//String videoName = videoFile.getPath();
 					audio1 = new OpenAudio();
 					audioFile1 = audio1.getAudioFile();
-					/*while (i < 3){
+					while (i < 3){
 						if (i == 0){
 							audio1 = new OpenAudio();
 						} else if (i == 1){
@@ -516,7 +287,7 @@ public class MainPlayer {
 						}
 						
 						i++;
-					}*/
+					}
 					
 				}
 			}
@@ -561,7 +332,7 @@ public class MainPlayer {
 		addAudioBtnConstraints.insets = new Insets(5,5,5,5);
 		addAudioBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
 		bottomPanel.add(addAudioBtn, addAudioBtnConstraints);
-		
+*/	
 	}
 	
 	
@@ -571,46 +342,9 @@ public class MainPlayer {
 	public static JProgressBar getProgressBar(){
 		return bar;
 	}
-
-
-	//The background task using the swingworker for the fast-forward and fast-backward functions
-	public class BackgroundTask extends SwingWorker<Void, Integer>{
-		EmbeddedMediaPlayer videoFile;
-		protected BackgroundTask(EmbeddedMediaPlayer videoFile){
-			this.videoFile = videoFile;
-
-		}
-
-		@Override
-		protected Void doInBackground() throws Exception {
-			int videoLength = ((int)videoFile.getLength()) / 2200;
-			if (currentTask == ">>"){
-				for(int i = 0; i< videoLength; i++) {
-					videoFile.skip(2000);
-					Thread.sleep(200);
-				}
-			}
-			if (currentTask == "<<"){
-				for(int i = 0; i< videoLength; i++) {
-					videoFile.skip(-2000);
-					Thread.sleep(200);
-				}
-			}
-
-			return null;
-		}
-
-		public void done(){
-
-			try {
-				get();
-			} catch (CancellationException | InterruptedException | ExecutionException e){
-
-			}
-		}
-
+	public EmbeddedMediaPlayer getVideo(){
+		return video;
 	}
-
 
 
 }

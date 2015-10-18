@@ -8,7 +8,7 @@ public class MainRunnerClass {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				new MainPlayer(args);
+				new MainPlayer();
 
 			}
 		});
