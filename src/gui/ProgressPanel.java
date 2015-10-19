@@ -19,6 +19,7 @@ public class ProgressPanel extends JPanel{
 	private static EmbeddedMediaPlayer video;
 	static boolean skipped = false;
 	static int progressBarVal;
+	static Timer timer;
 
 	public ProgressPanel(){
 		setLayout(new GridBagLayout());
@@ -52,20 +53,21 @@ public class ProgressPanel extends JPanel{
 				//System.out.println(progressVideoVal);
 				video.setPosition(progressVideo); //the position of the video, makes video jump to this point
 				//bar.setValue(progressBarVal);
+				//System.out.println(progressBarVal);
+				//video.setTime(arg0);
+				//System.out.println(video.getTime() );
 
 
 			}                                     
 		});
-	}
-
-	public static void setVideo(EmbeddedMediaPlayer Runningvideo){
-		video = Runningvideo;
-		Timer timer = new Timer(100, new ActionListener(){
+		
+		timer = new Timer(100, new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (skipped == false){
 					int i = (int) (video.getTime()/1000);
+					System.out.println(video.getTime() + "from timer");
 					bar.setValue(i);
 				} else {
 					//int i = (int) (video.getTime()/1000);
@@ -75,6 +77,11 @@ public class ProgressPanel extends JPanel{
 			}
 
 		});
+	}
+
+	public static void setVideo(EmbeddedMediaPlayer Runningvideo){
+		video = Runningvideo;
+		
 		timer.start();
 	}
 

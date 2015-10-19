@@ -20,7 +20,7 @@ public class SaveTextToMp3 extends SwingWorker<Void, Void> {
 	@Override
 	public Void doInBackground() throws Exception {
 		//all in one go: pipe commentary text into text2wav, save as wav, convert to mp3, delete the wav file
-		String cmd = "echo \'" + this._saveIt + "\' " + "| text2wave -scale 50 -o " + _filename + ".wav; ffmpeg -i " + _filename + ".wav -codec:a libmp3lame -qscale:a 2 " + _filename + ".mp3; rm -f "+ _filename + ".wav";
+		String cmd = "echo \'" + this._saveIt + "\' " + "| text2wave -o " + _filename + ".wav; ffmpeg -i " + _filename + ".wav -codec:a libmp3lame -qscale:a 2 " + _filename + ".mp3; rm -f "+ _filename + ".wav";
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
 		return null;

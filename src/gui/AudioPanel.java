@@ -1,5 +1,6 @@
 package gui;
 import functionality.Audio;
+import functionality.MergeAudioAndVideo;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 import java.awt.Dimension;
@@ -27,6 +28,8 @@ public class AudioPanel extends JPanel{
 	JTextArea audioSelected;
 	OpenAudio audio;
 	File audioFile;
+	static File videoFile;
+	Audio audioObj;
 	boolean audioChosen = false;
 	
 	public AudioPanel(){
@@ -70,7 +73,7 @@ public class AudioPanel extends JPanel{
 						if (audioFile != null){
 							audioChosen = true;
 							audioSelected.setText(audioFile.getName());
-							Audio audioObj = new Audio(path, audioFile.getName());
+							audioObj = new Audio(path, audioFile.getName());
 							audioObj.setTime((int) video.getTime());
 						}
 						
@@ -90,6 +93,9 @@ public class AudioPanel extends JPanel{
 					
 					@Override
 					public void actionPerformed(ActionEvent e){
+						String videoPath = videoFile.getAbsolutePath();
+						MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,audioObj.getAudioPath(), audioObj.getTime());
+						mergeTask.execute();
 					}
 				});
 				AudioPanelConstraints.gridy = 0;
@@ -103,6 +109,10 @@ public class AudioPanel extends JPanel{
 	
 	public static void setVideo(EmbeddedMediaPlayer runningVideo){
 		video = runningVideo;
+	}
+	
+	public static void setVideoFile(File vFile){
+		videoFile = vFile;
 	}
 	
 }

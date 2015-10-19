@@ -14,7 +14,9 @@ public class SayItWithFestival extends SwingWorker<Void, Void> {
 	}	
 	@Override
 	public Void doInBackground() throws Exception {
-		String cmd = "echo '"+this.sayIt + "' | festival --tts";
+		String cmd = "echo '"+sayIt + "' | festival --tts";
+		//cmd = "echo \""+"(Parameter.set 'Duration_Stretch 2.0) (SayText "+"\\"+"\""+sayIt+"\\"+"\""+")\""+" | festival";
+		System.out.println(cmd);
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
 		return null;

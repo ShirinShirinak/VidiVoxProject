@@ -30,6 +30,7 @@ public class OpenFile extends JPanel{
 		 if (returnVal == JFileChooser.APPROVE_OPTION){
 			 videoFile = fc.getSelectedFile();
 			 //System.out.println("you selected "+ videoFile.getName());
+			 AudioPanel.setVideoFile(videoFile);
 			 
 		 }
 		 

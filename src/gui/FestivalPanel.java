@@ -10,6 +10,7 @@ import java.io.File;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -57,7 +58,7 @@ public class FestivalPanel extends JPanel{
 				} else {
 					SayItWithFestival speaker = new SayItWithFestival(toSay);
 					try {
-						speaker.doInBackground();
+						speaker.execute();
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -129,5 +130,41 @@ public class FestivalPanel extends JPanel{
 				festivalConstrants.gridx = 3;
 				festivalConstrants.insets = new Insets(5,5,5,5);
 				add(saveCommentarybtn, festivalConstrants);
+				
+				final JComboBox<FestivalPanel.Pace> pace = new JComboBox<FestivalPanel.Pace>(Pace.values());
+				pace.addActionListener(new ActionListener(){
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						
+					}
+					
+				});
+				festivalConstrants.gridx = 4;
+				pace.setPreferredSize(new Dimension(90,10));
+				festivalConstrants.insets = new Insets(5,5,5,5);
+				add(pace, festivalConstrants);
+				
 	}
+	public enum Pace{
+		Normal, Slow, Fast;
+		
+		public String getPaceValue(){
+			String thePace = "(Parameter.set 'Duration_Stretch 1.0)";;
+			switch (this){
+			case Normal: 
+				thePace = "(Parameter.set 'Duration_Stretch 1.0)";
+			case Slow: 
+				thePace = "(Parameter.set 'Duration_Stretch 2.0)";
+			case Fast: 
+				thePace = "(Parameter.set 'Duration_Stretch 0.6)";
+			
+			}
+			return thePace;
+			
+		}
+	}
+	//echo "(Parameter.set 'Duration_Stretch 2.0) (SayText \"hello this is just a test.\")" | festival
+	
 }
+

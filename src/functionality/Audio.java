@@ -16,4 +16,16 @@ public class Audio {
 	public void setTime(int time){
 		this.time = time;
 	}
+	
+	public String getAudioPath(){
+		return audioPath;
+	}
+	
+	public String getAudioName(){
+		return audioName;
+	}
+	
+	public int getTime(){
+		return time;
+	}
 }
