@@ -10,6 +10,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -21,6 +22,7 @@ import javax.swing.JTextArea;
 
 public class AudioPanel extends JPanel{
 	Audio[] ListAudio = new Audio[5];
+	ArrayList<Audio> arrAudio = new ArrayList<Audio>();
 	private static EmbeddedMediaPlayer video;
 	JButton addAudioBtn = null;
 	JButton mergeBtn = null;
@@ -72,14 +74,25 @@ public class AudioPanel extends JPanel{
 						String path = audioFile.getAbsolutePath().toString();
 						if (audioFile != null){
 							audioChosen = true;
-							audioSelected.setText(audioFile.getName());
+							//audioSelected.setText(audioFile.getName());
+							audioSelected.append(audioFile.getName()+"\n");
 							audioObj = new Audio(path, audioFile.getName());
 							audioObj.setTime((int) video.getTime());
+							arrAudio.add(audioObj);
+							System.out.println("audio added");
+
+							for (int i=0; i<arrAudio.size(); i++){
+								ListAudio[i] = arrAudio.get(i);
+								System.out.println(ListAudio[i].getTime());
+							}
 						}
 						
+						
 					}
+					
 
 				});
+				
 
 				AudioPanelConstraints.gridy = 3;
 				AudioPanelConstraints.gridx = 0;
@@ -88,13 +101,14 @@ public class AudioPanel extends JPanel{
 				add(addAudioBtn, AudioPanelConstraints);
 				
 				
+				
 				mergeBtn = new JButton("Merge");
 				mergeBtn.addActionListener(new ActionListener(){
 					
 					@Override
 					public void actionPerformed(ActionEvent e){
 						String videoPath = videoFile.getAbsolutePath();
-						MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,audioObj.getAudioPath(), audioObj.getTime());
+						MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,ListAudio);
 						mergeTask.execute();
 					}
 				});
