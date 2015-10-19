@@ -110,6 +110,7 @@ public class AudioPanel extends JPanel{
 						String videoPath = videoFile.getAbsolutePath();
 						MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,ListAudio);
 						mergeTask.execute();
+						System.out.println("executing it");
 					}
 				});
 				AudioPanelConstraints.gridy = 0;
