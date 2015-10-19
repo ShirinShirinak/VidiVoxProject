@@ -6,6 +6,7 @@ import javax.swing.SwingWorker;
 
 public class SayItWithFestival extends SwingWorker<Void, Void> {
 	private String sayIt;
+	private static String paceSelection = "(Parameter.set 'Duration_Stretch 1.0)";
 	
 	public SayItWithFestival (String phrase){
 		this.sayIt = phrase;
@@ -16,7 +17,8 @@ public class SayItWithFestival extends SwingWorker<Void, Void> {
 	public Void doInBackground() throws Exception {
 		String cmd = "echo '"+sayIt + "' | festival --tts";
 		//cmd = "echo \""+"(Parameter.set 'Duration_Stretch 2.0) (SayText "+"\\"+"\""+sayIt+"\\"+"\""+")\""+" | festival";
-		System.out.println(cmd);
+		cmd = "echo \""+paceSelection+" (SayText "+"\\"+"\""+sayIt+"\\"+"\""+")\""+" | festival";
+		//System.out.println(cmd);
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
 		return null;
@@ -30,5 +32,10 @@ public class SayItWithFestival extends SwingWorker<Void, Void> {
 		fixed.replace("$", "\\$");
 		return fixed;
 	}
+	
+	public static void setPaceSelection(String pace){
+		paceSelection = pace;
+	}
+	
 }
 

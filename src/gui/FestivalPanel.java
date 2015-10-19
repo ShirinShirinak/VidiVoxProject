@@ -136,7 +136,8 @@ public class FestivalPanel extends JPanel{
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						
+						String paceValue = ((Pace) pace.getSelectedItem()).getPaceValue();
+						SayItWithFestival.setPaceSelection(paceValue);
 					}
 					
 				});
@@ -154,13 +155,17 @@ public class FestivalPanel extends JPanel{
 			switch (this){
 			case Normal: 
 				thePace = "(Parameter.set 'Duration_Stretch 1.0)";
+				break;
 			case Slow: 
 				thePace = "(Parameter.set 'Duration_Stretch 2.0)";
+				break;
 			case Fast: 
 				thePace = "(Parameter.set 'Duration_Stretch 0.6)";
+				break;
 			
 			}
 			return thePace;
+			
 			
 		}
 	}
