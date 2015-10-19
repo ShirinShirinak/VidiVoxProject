@@ -19,6 +19,7 @@ public class SayItWithFestival extends SwingWorker<Void, Void> {
 		//cmd = "echo \""+"(Parameter.set 'Duration_Stretch 2.0) (SayText "+"\\"+"\""+sayIt+"\\"+"\""+")\""+" | festival";
 		cmd = "echo \""+paceSelection+" (SayText "+"\\"+"\""+sayIt+"\\"+"\""+")\""+" | festival";
 		//System.out.println(cmd);
+		//System.out.println(cmd);
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
 		return null;

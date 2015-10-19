@@ -5,6 +5,7 @@ public class SaveTextToMp3 extends SwingWorker<Void, Void> {
 
 	private String _saveIt;
 	private String _filename;
+	private static String paceSelection;
 	
 	public SaveTextToMp3(String saveIt, String filename){
 		this._saveIt = saveIt;
@@ -20,7 +21,9 @@ public class SaveTextToMp3 extends SwingWorker<Void, Void> {
 	@Override
 	public Void doInBackground() throws Exception {
 		//all in one go: pipe commentary text into text2wav, save as wav, convert to mp3, delete the wav file
-		String cmd = "echo \'" + this._saveIt + "\' " + "| text2wave -o " + _filename + ".wav; ffmpeg -i " + _filename + ".wav -codec:a libmp3lame -qscale:a 2 " + _filename + ".mp3; rm -f "+ _filename + ".wav";
+		String cmd = "echo \'" + _saveIt + "\' " + "| text2wave -o " + _filename + ".wav -eval \""+paceSelection+"\"; ffmpeg -i " + _filename + ".wav -codec:a libmp3lame -qscale:a 2 " + _filename + ".mp3; rm -f "+ _filename + ".wav";
+		
+		//System.out.println(cmd);
 		ProcessBuilder builder = new ProcessBuilder("/bin/bash", "-c", cmd);
 		Process process = builder.start();
 		return null;
@@ -40,5 +43,9 @@ public class SaveTextToMp3 extends SwingWorker<Void, Void> {
 		fixed.replace("\"", "");
 		fixed.replace("$", "\\$");
 		return fixed;
+	}
+	
+	public static void setPaceSelection(String pace){
+		paceSelection = pace;
 	}
 }

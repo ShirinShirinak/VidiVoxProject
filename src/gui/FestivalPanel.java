@@ -138,6 +138,7 @@ public class FestivalPanel extends JPanel{
 					public void actionPerformed(ActionEvent e) {
 						String paceValue = ((Pace) pace.getSelectedItem()).getPaceValue();
 						SayItWithFestival.setPaceSelection(paceValue);
+						SaveTextToMp3.setPaceSelection(paceValue);
 					}
 					
 				});
