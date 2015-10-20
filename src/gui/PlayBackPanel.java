@@ -231,8 +231,5 @@ public class PlayBackPanel extends JPanel{
 		return video;
 	}
 	
-	public void repaintPlayBtn(){
-		PlayBtn.revalidate();
-		PlayBtn.repaint();
-	}
+
 }

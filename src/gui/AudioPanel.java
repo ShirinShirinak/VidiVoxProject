@@ -122,7 +122,10 @@ public class AudioPanel extends JPanel{
 				if (outputVideo.getSaveDestination() != null){
 					outputVideoFile = outputVideo.getSaveDestination().getName();
 					outputVideoPathSplit = outputVideoFile.split(".avi");
-
+					if (!outputVideoPathSplit[0].matches("[A-Za-z0-9_]+")){
+						JOptionPane option = new JOptionPane();
+						JOptionPane.showMessageDialog(option, "Please choose and alphanumeric name with no spaces.");
+					} else {
 					String workingDirectory = System.getProperty("user.dir");
 					File f = new File(outputVideo.getSaveDestination().getParentFile()+ "/" + outputVideoPathSplit[0] + ".avi");
 					String path = f.getAbsolutePath();
@@ -138,6 +141,7 @@ public class AudioPanel extends JPanel{
 						//System.out.println("exists");
 
 					}
+				}
 
 				}
 
