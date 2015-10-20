@@ -34,9 +34,10 @@ public class AudioPanel extends JPanel{
 	static File videoFile;
 	Audio audioObj;
 	boolean audioChosen = false;
-	
+	int countBtnClick=0;
+
 	public AudioPanel(){
-		
+
 		setLayout(new GridBagLayout());
 		setPreferredSize(new Dimension(100, 200));
 		GridBagConstraints AudioPanelConstraints = new GridBagConstraints();
@@ -44,112 +45,127 @@ public class AudioPanel extends JPanel{
 		AudioPanelConstraints.gridy = 0;
 		AudioPanelConstraints.gridx = 0;
 		setBorder(BorderFactory.createTitledBorder("Merge Audio and Video"));
-				
+
 		//Adding the Jlist to show the different audio options
-				//JList<Audio> audioList = new JList<Audio>(ListAudio); //give it the array
-				//audioList.setPreferredSize(new Dimension(100, 100));
-				//audioList.setBounds(65, 203, 148, 200);
-				//JScrollPane audioPane = new JScrollPane(audioList);
-				AudioPanelConstraints.gridy = 0;
-				AudioPanelConstraints.gridx = 0;
-				AudioPanelConstraints.insets = new Insets(5,5,5,5);
-				//add(audioPane, AudioPanelConstraints);
-				
-				audioBox = Box.createVerticalBox();
-				add(audioBox, AudioPanelConstraints);
-				
-				audioSelected = new JTextArea();
-				audioSelected.setEditable(false);
-				audioSelected.setLineWrap(true);
-				audioSelected.setWrapStyleWord(true);
-				audioBox.add(audioSelected, AudioPanelConstraints);
-				audioBox.setPreferredSize(new Dimension(200, 100));
-				
-				addAudioBtn = new JButton("Add Audio");
-				addAudioBtn.addActionListener(new ActionListener(){
-					int count = 0;
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						audio = new OpenAudio();
-						audioFile = audio.getAudioFile();
-						String path = audioFile.getAbsolutePath().toString();
-						if (audioFile != null){
-							audioChosen = true;
-							//audioSelected.setText(audioFile.getName());
-							audioSelected.append(audioFile.getName()+"\n");
-							audioObj = new Audio(path, audioFile.getName());
-							audioObj.setTime((int) video.getTime());
-							arrAudio.add(audioObj);
-							System.out.println("audio added");
+		//JList<Audio> audioList = new JList<Audio>(ListAudio); //give it the array
+		//audioList.setPreferredSize(new Dimension(100, 100));
+		//audioList.setBounds(65, 203, 148, 200);
+		//JScrollPane audioPane = new JScrollPane(audioList);
+		AudioPanelConstraints.gridy = 0;
+		AudioPanelConstraints.gridx = 0;
+		AudioPanelConstraints.insets = new Insets(5,5,5,5);
+		//add(audioPane, AudioPanelConstraints);
 
-							for (int i=0; i<arrAudio.size(); i++){
-								ListAudio[i] = arrAudio.get(i);
-								System.out.println(ListAudio[i].getTime());
-							}
-						}
-						
-						
+		audioBox = Box.createVerticalBox();
+		add(audioBox, AudioPanelConstraints);
+
+		audioSelected = new JTextArea();
+		audioSelected.setEditable(false);
+		audioSelected.setLineWrap(true);
+		audioSelected.setWrapStyleWord(true);
+		audioBox.add(audioSelected, AudioPanelConstraints);
+		audioBox.setPreferredSize(new Dimension(200, 100));
+
+
+		addAudioBtn = new JButton("Add Audio");
+		addAudioBtn.addActionListener(new ActionListener(){
+
+			int count = 0;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				audio = new OpenAudio();
+				audioFile = audio.getAudioFile();
+				String path = audioFile.getAbsolutePath().toString();
+				if (audioFile != null){
+					addCount();
+					audioChosen = true;
+					//audioSelected.setText(audioFile.getName());
+					audioSelected.append(audioFile.getName()+"\n");
+					audioObj = new Audio(path, audioFile.getName());
+					audioObj.setTime((int) video.getTime());
+					arrAudio.add(audioObj);
+					System.out.println("audio added");
+
+					for (int i=0; i<arrAudio.size(); i++){
+						ListAudio[i] = arrAudio.get(i);
+						System.out.println(ListAudio[i].getTime());
 					}
-					
+				}
 
-				});
-				
+				disableAddAudioBtn();
+			}
 
-				AudioPanelConstraints.gridy = 3;
-				AudioPanelConstraints.gridx = 0;
-				AudioPanelConstraints.insets = new Insets(5,5,5,5);
-				addAudioBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
-				add(addAudioBtn, AudioPanelConstraints);
-				
-				
-				
-				mergeBtn = new JButton("Merge");
-				mergeBtn.addActionListener(new ActionListener(){
-					
-					@Override
-					public void actionPerformed(ActionEvent e){
-						SaveMergedFile outputVideo = new SaveMergedFile();
-						String outputVideoFile;
-						String[] outputVideoPathSplit;
-						if (outputVideo.getSaveDestination() != null){
-							outputVideoFile = outputVideo.getSaveDestination().getName();
-							outputVideoPathSplit = outputVideoFile.split(".avi");
-							
-							String workingDirectory = System.getProperty("user.dir");
-							File f = new File(outputVideo.getSaveDestination().getParentFile()+ "/" + outputVideoPathSplit[0] + ".avi");
-							String path = f.getAbsolutePath();
-							System.out.println(f.getAbsolutePath());
-							if (!f.exists()){
-								String videoPath = videoFile.getAbsolutePath();
-								MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,ListAudio,path);
-								mergeTask.execute();
-								//System.out.println("executing it");
-							} else {
-								JOptionPane option = new JOptionPane();
-								JOptionPane.showMessageDialog(option, "The file already exists. Please choose another filename.");
-								//System.out.println("exists");
-								
-							}
-							
-						}
-						
+
+		});
+
+
+
+
+		AudioPanelConstraints.gridy = 3;
+		AudioPanelConstraints.gridx = 0;
+		AudioPanelConstraints.insets = new Insets(5,5,5,5);
+		addAudioBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
+		add(addAudioBtn, AudioPanelConstraints);
+
+
+
+		mergeBtn = new JButton("Merge");
+		mergeBtn.addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e){
+				SaveMergedFile outputVideo = new SaveMergedFile();
+				String outputVideoFile;
+				String[] outputVideoPathSplit;
+				if (outputVideo.getSaveDestination() != null){
+					outputVideoFile = outputVideo.getSaveDestination().getName();
+					outputVideoPathSplit = outputVideoFile.split(".avi");
+
+					String workingDirectory = System.getProperty("user.dir");
+					File f = new File(outputVideo.getSaveDestination().getParentFile()+ "/" + outputVideoPathSplit[0] + ".avi");
+					String path = f.getAbsolutePath();
+					System.out.println(f.getAbsolutePath());
+					if (!f.exists()){
+						String videoPath = videoFile.getAbsolutePath();
+						MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,ListAudio,path);
+						mergeTask.execute();
+						//System.out.println("executing it");
+					} else {
+						JOptionPane option = new JOptionPane();
+						JOptionPane.showMessageDialog(option, "The file already exists. Please choose another filename.");
+						//System.out.println("exists");
+
 					}
-				});
-				AudioPanelConstraints.gridy = 0;
-				AudioPanelConstraints.gridx = 1;
-				AudioPanelConstraints.gridheight = 2;
-				AudioPanelConstraints.gridwidth = 2;
-				AudioPanelConstraints.insets = new Insets(5,5,5,5);
-				mergeBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
-				add(mergeBtn, AudioPanelConstraints);
+
+				}
+
+			}
+		});
+		AudioPanelConstraints.gridy = 0;
+		AudioPanelConstraints.gridx = 1;
+		AudioPanelConstraints.gridheight = 2;
+		AudioPanelConstraints.gridwidth = 2;
+		AudioPanelConstraints.insets = new Insets(5,5,5,5);
+		mergeBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
+		add(mergeBtn, AudioPanelConstraints);
 	}
-	
+
 	public static void setVideo(EmbeddedMediaPlayer runningVideo){
 		video = runningVideo;
 	}
-	
+
 	public static void setVideoFile(File vFile){
 		videoFile = vFile;
 	}
-	
+
+	public void addCount(){
+		countBtnClick++;
+	}
+
+	public void disableAddAudioBtn(){
+		if (countBtnClick == 5){
+			addAudioBtn.setEnabled(false);
+		}
+	}
+
 }

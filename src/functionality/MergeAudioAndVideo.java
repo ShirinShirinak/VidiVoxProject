@@ -1,5 +1,7 @@
 package functionality;
 
+import java.io.File;
+
 import javax.swing.SwingWorker;
 
 public class MergeAudioAndVideo extends SwingWorker<Void, String>{
@@ -44,7 +46,16 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 		mergeBuilder = new ProcessBuilder("/bin/bash","-c", cmd);
 		processMerge = mergeBuilder.start();
 		System.out.println("in the background task - merging");
-
+		
+		/*for (int i=0; i<audioCount; i++){
+			cmd = "rm "+ saveDes+i+ ".mp3";
+			System.out.println(cmd);
+			mergeBuilder = new ProcessBuilder("/bin/bash","-c", cmd);
+			processMerge = mergeBuilder.start();
+			System.out.println("deleting files");
+		}*/
+		
+		
 
 		//String cmd = "echo 'hello world' | festival --tts";
 		//mergeBuilder = new ProcessBuilder("/bin/bash", "-c", cmd);
