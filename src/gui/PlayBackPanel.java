@@ -27,6 +27,8 @@ public class PlayBackPanel extends JPanel{
 	JButton forwardBtn, backwardBtn, pauseBtn;
 	boolean isPaused = false;
 	File videoFile;
+	OpenFile file;
+	JButton PlayBtn = null;
 	public static EmbeddedMediaPlayer video;
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent = null;
 
@@ -39,11 +41,31 @@ public class PlayBackPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				//Opening the file through OpenFile class
-				new OpenFile();
-				if (OpenFile.getVideoFile() != null){
-					FileChosen = true;
-					videoFile = OpenFile.getVideoFile();
+				if (videoFile != null){
+					JOptionPane option = new JOptionPane();
+					int reply = JOptionPane.showConfirmDialog(option, "Would you like to load a new video?");
+					if (reply == JOptionPane.YES_OPTION){
+						
+						file = new OpenFile();
+						if (file.getVideoFile() != null){
+
+							FileChosen = true;
+							videoFile = file.getVideoFile();
+							mediaPlayerComponent = TopPanel.getMPComponent();
+							new PlayVideo(file.getVideoFile(), mediaPlayerComponent);
+							video = PlayVideo.getVideo();
+							ProgressPanel.setVideo(video);
+							AudioPanel.setVideo(video);
+						}
+					}
+				} else {
+					//Opening the file through OpenFile class
+					file = new OpenFile();
+					if (file.getVideoFile() != null){
+
+						FileChosen = true;
+						videoFile = file.getVideoFile();
+					}
 				}
 
 			}
@@ -85,7 +107,7 @@ public class PlayBackPanel extends JPanel{
 		add(backwardBtn, con);
 
 		/////////////////////////////////////////////////////////////////////////////////Play
-		final JButton PlayBtn = new JButton("Play");
+		PlayBtn = new JButton("Play");
 		PlayBtn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent c){
@@ -98,13 +120,13 @@ public class PlayBackPanel extends JPanel{
 						running = true;
 						//Playing the video using the PlayVideo class
 						mediaPlayerComponent = TopPanel.getMPComponent();
-						new PlayVideo(OpenFile.getVideoFile(), mediaPlayerComponent);
+						new PlayVideo(file.getVideoFile(), mediaPlayerComponent);
 						video = PlayVideo.getVideo();
 						ProgressPanel.setVideo(video);
 						AudioPanel.setVideo(video);
-						
+
 						video.addMediaPlayerEventListener(new MediaPlayerEventAdapter(){
-							
+
 							public void finished(MediaPlayer player){
 								running = false;
 								video.stop();
@@ -117,7 +139,7 @@ public class PlayBackPanel extends JPanel{
 						forwardBtn.setEnabled(true);
 						if (task != null){
 							task.cancel(true);
-							
+
 						}
 
 						if (isPaused == false){
@@ -204,8 +226,13 @@ public class PlayBackPanel extends JPanel{
 	public static String getTask(){
 		return currentTask;
 	}
-	
+
 	public static EmbeddedMediaPlayer getPlayingVideo(){
 		return video;
+	}
+	
+	public void repaintPlayBtn(){
+		PlayBtn.revalidate();
+		PlayBtn.repaint();
 	}
 }
