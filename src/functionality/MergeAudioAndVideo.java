@@ -11,11 +11,12 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 	Process processAudioDelay;
 	Process processMerge;
 	String tempMp3s = "";
+	String videoDestination;
 
-	public MergeAudioAndVideo(String videoPath, Audio[] ListAudio ){
+	public MergeAudioAndVideo(String videoPath, Audio[] ListAudio, String destination ){
 		this.videoPath = videoPath;
 		ListAudioToMerge = ListAudio;
-
+		videoDestination = destination;
 
 	}
 	@Override
@@ -28,7 +29,7 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 				audioDelayBuilder = new ProcessBuilder("/bin/bash", "-c", cmd);
 
 				System.out.println("in the background task - mp3 delay");
-				tempMp3s+=" -i "+ListAudioToMerge[i].getAudioPath();
+				tempMp3s+=" -i "+saveDes+i+".mp3";
 				audioCount++;
 				System.out.println(ListAudioToMerge.length);
 			}
@@ -38,7 +39,8 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 		//processAudioDelay.waitFor();
 		System.out.println(audioCount);
 
-		cmd = "ffmpeg -i "+videoPath+tempMp3s+" -filter_complex amix=inputs="+(audioCount+1)+":duration=first /home/shirin/merged.avi";
+		cmd = "ffmpeg -i "+videoPath+tempMp3s+" -filter_complex amix=inputs="+(audioCount+1)+":duration=first "+videoDestination;
+		System.out.println(cmd);
 		mergeBuilder = new ProcessBuilder("/bin/bash","-c", cmd);
 		processMerge = mergeBuilder.start();
 		System.out.println("in the background task - merging");

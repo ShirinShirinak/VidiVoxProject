@@ -16,6 +16,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -107,10 +108,31 @@ public class AudioPanel extends JPanel{
 					
 					@Override
 					public void actionPerformed(ActionEvent e){
-						String videoPath = videoFile.getAbsolutePath();
-						MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,ListAudio);
-						mergeTask.execute();
-						System.out.println("executing it");
+						SaveMergedFile outputVideo = new SaveMergedFile();
+						String outputVideoFile;
+						String[] outputVideoPathSplit;
+						if (outputVideo.getSaveDestination() != null){
+							outputVideoFile = outputVideo.getSaveDestination().getName();
+							outputVideoPathSplit = outputVideoFile.split(".avi");
+							
+							String workingDirectory = System.getProperty("user.dir");
+							File f = new File(outputVideo.getSaveDestination().getParentFile()+ "/" + outputVideoPathSplit[0] + ".avi");
+							String path = f.getAbsolutePath();
+							System.out.println(f.getAbsolutePath());
+							if (!f.exists()){
+								String videoPath = videoFile.getAbsolutePath();
+								MergeAudioAndVideo mergeTask = new MergeAudioAndVideo(videoPath,ListAudio,path);
+								mergeTask.execute();
+								//System.out.println("executing it");
+							} else {
+								JOptionPane option = new JOptionPane();
+								JOptionPane.showMessageDialog(option, "The file already exists. Please choose another filename.");
+								//System.out.println("exists");
+								
+							}
+							
+						}
+						
 					}
 				});
 				AudioPanelConstraints.gridy = 0;

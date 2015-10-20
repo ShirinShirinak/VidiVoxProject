@@ -21,6 +21,8 @@ public class OpenAudio extends JPanel{
 		fc = new JFileChooser();
 		FileNameExtensionFilter fcFilter = new FileNameExtensionFilter("MP3 FILE", "mp3");
 		fc.setFileFilter(fcFilter);
+		File workingDirectory = new File(System.getProperty("user.dir"));
+		fc.setCurrentDirectory(workingDirectory);
 
 		int returnVal = fc.showOpenDialog(OpenAudio.this);
 
