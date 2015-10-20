@@ -56,7 +56,7 @@ public class AudioPanel extends JPanel{
 		AudioPanelConstraints.gridx = 0;
 		AudioPanelConstraints.insets = new Insets(5,5,5,5);
 		//add(audioPane, AudioPanelConstraints);
-
+		
 		audioBox = Box.createVerticalBox();
 		add(audioBox, AudioPanelConstraints);
 

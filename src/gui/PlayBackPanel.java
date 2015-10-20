@@ -5,12 +5,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JSlider;
 import javax.swing.Timer;
 
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
@@ -29,9 +32,12 @@ public class PlayBackPanel extends JPanel{
 	File videoFile;
 	OpenFile file;
 	JButton PlayBtn = null;
+	JButton volumeBtn = null;
+	JSlider volumeBar = null;
 	public static EmbeddedMediaPlayer video;
 	private EmbeddedMediaPlayerComponent mediaPlayerComponent = null;
 
+	
 	public PlayBackPanel(){
 		setLayout(new GridBagLayout());
 		GridBagConstraints con = new GridBagConstraints();
@@ -62,7 +68,7 @@ public class PlayBackPanel extends JPanel{
 					//Opening the file through OpenFile class
 					file = new OpenFile();
 					if (file.getVideoFile() != null){
-
+						enablePlayBtn();
 						FileChosen = true;
 						videoFile = file.getVideoFile();
 					}
@@ -114,6 +120,7 @@ public class PlayBackPanel extends JPanel{
 				if (FileChosen == true){
 
 					if ((running == false)){
+						enableButtons();
 						AudioPanel.enableAddAudio();
 						ProgressPanel.enableProgressBar();
 						play = true;
@@ -204,7 +211,7 @@ public class PlayBackPanel extends JPanel{
 		con.gridx = 3;
 		add(forwardBtn, con);
 		/////////////////////////////////////////////////////////////////////////////////Volume
-		final JButton volumeBtn = new JButton("Mute");
+		volumeBtn = new JButton("Mute");
 		volumeBtn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e){
@@ -221,6 +228,23 @@ public class PlayBackPanel extends JPanel{
 		});
 		con.gridx = 4;
 		add(volumeBtn, con);
+		
+		volumeBar = new JSlider(0, 200, 100);
+		volumeBar.addMouseMotionListener(new MouseMotionAdapter(){
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				video.setVolume(volumeBar.getValue());
+				int volumeLevel = video.getVolume();
+			}
+		});
+		con.gridx = 5;
+		add(volumeBar, con);
+		
+		volumeBar.setEnabled(false);
+		PlayBtn.setEnabled(false);
+		backwardBtn.setEnabled(false);
+		forwardBtn.setEnabled(false);
+		volumeBtn.setEnabled(false);
 	}
 
 	public static String getTask(){
@@ -231,5 +255,15 @@ public class PlayBackPanel extends JPanel{
 		return video;
 	}
 	
+	public void enablePlayBtn(){
+		PlayBtn.setEnabled(true);
+	}
+	
+	public void enableButtons(){
+		backwardBtn.setEnabled(true);
+		forwardBtn.setEnabled(true);
+		volumeBtn.setEnabled(true);
+		volumeBar.setEnabled(true);
+	}
 
 }

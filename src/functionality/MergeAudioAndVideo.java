@@ -2,6 +2,7 @@ package functionality;
 
 import java.io.File;
 
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
 public class MergeAudioAndVideo extends SwingWorker<Void, String>{
@@ -64,6 +65,11 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 
 		//Process process = mergeBuilder.start();
 		return null;
+	}
+	
+	public void done(){
+		JOptionPane option = new JOptionPane();
+		JOptionPane.showMessageDialog(option, "The file is saved successfully at "+videoDestination);
 	}
 
 }
