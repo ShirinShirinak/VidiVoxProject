@@ -20,6 +20,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.border.Border;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class AudioPanel extends JPanel{
 	Audio[] ListAudio = new Audio[5];
@@ -61,6 +64,8 @@ public class AudioPanel extends JPanel{
 		add(audioBox, AudioPanelConstraints);
 
 		audioSelected = new JTextArea();
+		TitledBorder titleBorder = BorderFactory.createTitledBorder("Selected MP3 files");
+		audioSelected.setBorder(titleBorder);
 		audioSelected.setEditable(false);
 		audioSelected.setLineWrap(true);
 		audioSelected.setWrapStyleWord(true);
@@ -82,7 +87,8 @@ public class AudioPanel extends JPanel{
 					addCount();
 					audioChosen = true;
 					//audioSelected.setText(audioFile.getName());
-					audioSelected.append(audioFile.getName()+"\n");
+					int timeBox = (int) video.getTime() / 1000;
+					audioSelected.append(audioFile.getName()+" -"+timeBox+" Sec\n");
 					audioObj = new Audio(path, audioFile.getName());
 					audioObj.setTime((int) video.getTime());
 					arrAudio.add(audioObj);
