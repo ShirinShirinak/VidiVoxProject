@@ -33,7 +33,7 @@ public class ProgressPanel extends JPanel{
 		progressConstraints.gridx = 0;
 		progressConstraints.gridy = 0;
 		add(bar,progressConstraints);
-
+		bar.setEnabled(false);
 
 		bar.addMouseListener(new MouseAdapter() {            
 			public void mouseClicked(MouseEvent e) {
@@ -83,6 +83,10 @@ public class ProgressPanel extends JPanel{
 		video = Runningvideo;
 		
 		timer.start();
+	}
+	
+	public static void enableProgressBar(){
+		bar.setEnabled(true);
 	}
 
 

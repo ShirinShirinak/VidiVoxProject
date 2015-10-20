@@ -25,8 +25,8 @@ public class AudioPanel extends JPanel{
 	Audio[] ListAudio = new Audio[5];
 	ArrayList<Audio> arrAudio = new ArrayList<Audio>();
 	private static EmbeddedMediaPlayer video;
-	JButton addAudioBtn = null;
-	JButton mergeBtn = null;
+	static JButton addAudioBtn = null;
+	static JButton mergeBtn = null;
 	Box audioBox;
 	JTextArea audioSelected;
 	OpenAudio audio;
@@ -37,6 +37,7 @@ public class AudioPanel extends JPanel{
 	int countBtnClick=0;
 
 	public AudioPanel(){
+		
 
 		setLayout(new GridBagLayout());
 		setPreferredSize(new Dimension(100, 200));
@@ -77,6 +78,7 @@ public class AudioPanel extends JPanel{
 				audioFile = audio.getAudioFile();
 				String path = audioFile.getAbsolutePath().toString();
 				if (audioFile != null){
+					enableMergeBtn();
 					addCount();
 					audioChosen = true;
 					//audioSelected.setText(audioFile.getName());
@@ -148,6 +150,9 @@ public class AudioPanel extends JPanel{
 		AudioPanelConstraints.insets = new Insets(5,5,5,5);
 		mergeBtn.setMargin(new java.awt.Insets(1, 2, 1, 2));
 		add(mergeBtn, AudioPanelConstraints);
+		
+		addAudioBtn.setEnabled(false);
+		mergeBtn.setEnabled(false);
 	}
 
 	public static void setVideo(EmbeddedMediaPlayer runningVideo){
@@ -166,6 +171,15 @@ public class AudioPanel extends JPanel{
 		if (countBtnClick == 5){
 			addAudioBtn.setEnabled(false);
 		}
+	}
+	
+	public static void enableAddAudio(){
+		addAudioBtn.setEnabled(true);
+		
+	}
+	
+	public static void enableMergeBtn(){
+		mergeBtn.setEnabled(true);
 	}
 
 }

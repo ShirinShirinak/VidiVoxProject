@@ -92,6 +92,8 @@ public class PlayBackPanel extends JPanel{
 				if (FileChosen == true){
 
 					if ((running == false)){
+						AudioPanel.enableAddAudio();
+						ProgressPanel.enableProgressBar();
 						play = true;
 						running = true;
 						//Playing the video using the PlayVideo class
