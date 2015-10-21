@@ -65,15 +65,17 @@ public class ProgressPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println(video.getTime()+" "+ video.getLength() +"      "+ (100.0*video.getTime() / video.getLength()));
 				if (skipped == false){
 					int i = (int) (video.getTime()/1000);
 					//System.out.println(video.getTime() + "from timer");
-					bar.setValue(i);
+					//bar.setValue(i);
 				} else {
 					//int i = (int) (video.getTime()/1000);
-					bar.setValue(progressBarVal);
+					//bar.setValue(progressBarVal);
 					skipped = false;
 				}
+				bar.setValue((int) (100.0*video.getTime() / video.getLength()));
 			}
 
 		});
