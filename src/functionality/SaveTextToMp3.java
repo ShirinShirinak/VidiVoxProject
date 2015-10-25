@@ -5,7 +5,7 @@ public class SaveTextToMp3 extends SwingWorker<Void, Void> {
 
 	private String _saveIt;
 	private String _filename;
-	private static String paceSelection;
+	private static String paceSelection = "(Parameter.set 'Duration_Stretch 1.0)";
 	
 	public SaveTextToMp3(String saveIt, String filename){
 		this._saveIt = saveIt;

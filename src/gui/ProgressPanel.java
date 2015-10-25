@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -11,6 +12,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.Timer;
+import javax.swing.plaf.ProgressBarUI;
+import javax.swing.plaf.metal.MetalProgressBarUI;
 
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
@@ -29,6 +32,18 @@ public class ProgressPanel extends JPanel{
 		bar.setPreferredSize(new Dimension(1000, 20));
 		bar.setValue(0);
 		bar.setStringPainted(true);
+		bar.setForeground(Color.green);
+		ProgressBarUI ui = new MetalProgressBarUI(){
+			  
+			  protected Color getSelectionForeground() {
+			    return Color.black;
+			  }
+			  
+			  protected Color getSelectionBackground(){
+			    return Color.black;
+			  }
+			};
+			bar.setUI( ui );
 		GridBagConstraints progressConstraints = new GridBagConstraints();
 		progressConstraints.gridx = 0;
 		progressConstraints.gridy = 0;
@@ -65,7 +80,7 @@ public class ProgressPanel extends JPanel{
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(video.getTime()+" "+ video.getLength() +"      "+ (100.0*video.getTime() / video.getLength()));
+				//System.out.println(video.getTime()+" "+ video.getLength() +"      "+ (100.0*video.getTime() / video.getLength()));
 				if (skipped == false){
 					int i = (int) (video.getTime()/1000);
 					//System.out.println(video.getTime() + "from timer");

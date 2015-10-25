@@ -32,7 +32,7 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 		if (!tempFolder.exists()){
 			tempFolder.mkdir();
 		} 
-		saveDestinationTempFiles = tempFolder+ System.getProperty(File.separator)+"temp"; //tempDirectory system.getProperty(file.separator)
+		saveDestinationTempFiles = tempFolder+ System.getProperty("file.separator")+"temp"; //tempDirectory system.getProperty(file.separator)
 
 	}
 	@Override
@@ -42,6 +42,7 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 		for (int i=0; i<ListAudioToMerge.length; i++){
 			if (ListAudioToMerge[i] != null){
 				cmd = "ffmpeg -i "+ListAudioToMerge[i].getAudioPath()+" -filter_complex adelay="+ListAudioToMerge[i].getTime()+" "+ saveDestinationTempFiles+i+".mp3";
+				System.out.println(cmd);
 				audioDelayBuilder = new ProcessBuilder("/bin/bash", "-c", cmd);
 
 				System.out.println("in the background task - mp3 delay");
@@ -64,31 +65,38 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 
 
 		String directory = tempFolder.getAbsolutePath();
+		
+		for (int i=0; i<audioCount; i++){
+			//cmd2+= " ";
+			//cmd2+="temp"+i+".mp3";
+			String cmd2 = "pwd; rm temp"+i+".mp3";
+			ProcessBuilder builder = new ProcessBuilder("bash", "-c",cmd2);
 
-		String cmd2 = "pwd; rm file.mp3";
+			builder.directory(new File(directory));
+			builder.redirectErrorStream(true);
 
-		ProcessBuilder builder = new ProcessBuilder("bash", "-c",cmd2);
-
-		builder.directory(new File(directory));
-		builder.redirectErrorStream(true);
-
-		Process process;
-		try {
-			process = builder.start();
+			Process process;
+			try {
+				process = builder.start();
 
 
-			InputStream stdout = process.getInputStream();
-			//InputStream stderr = process.getErrorStream();
+				InputStream stdout = process.getInputStream();
+				//InputStream stderr = process.getErrorStream();
 
-			BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
+				BufferedReader stdoutBuffered = new BufferedReader(new InputStreamReader(stdout));
 
-			String line = null;
-			while ((line = stdoutBuffered.readLine()) != null ) {
-				System.out.println(line);
+				String line = null;
+				while ((line = stdoutBuffered.readLine()) != null ) {
+					System.out.println(line);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
+		//System.out.println(cmd2);
+		
+
+		
 		/*
 		String[] tempAudioFiles = TempFolder.list();
 		for(String audio: tempAudioFiles){

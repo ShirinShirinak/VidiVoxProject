@@ -118,7 +118,7 @@ public class FestivalPanel extends JPanel{
 										e1.printStackTrace();
 									}
 									//next: need to make sure following line only appears if saving really worked. (get message from save obj)
-									JOptionPane.showMessageDialog(option, "Commentary saved successfully.");
+									JOptionPane.showMessageDialog(option, "Commentary saved successfully at "+System.getProperty("user.dir"));
 									return;
 								}
 							}

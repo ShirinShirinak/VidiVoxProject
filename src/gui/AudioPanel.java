@@ -88,6 +88,7 @@ public class AudioPanel extends JPanel{
 					audioChosen = true;
 					//audioSelected.setText(audioFile.getName());
 					int timeBox = (int) video.getTime() / 1000;
+					System.out.println((int) video.getTime());
 					audioSelected.append(audioFile.getName()+" -"+timeBox+" Sec\n");
 					audioObj = new Audio(path, audioFile.getName());
 					audioObj.setTime((int) video.getTime());
