@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,6 +39,7 @@ public class AudioPanel extends JPanel{
 	Audio audioObj;
 	boolean audioChosen = false;
 	int countBtnClick=0;
+	static JLabel processLabel;
 
 	public AudioPanel(){
 		
@@ -164,6 +166,12 @@ public class AudioPanel extends JPanel{
 		
 		addAudioBtn.setEnabled(false);
 		mergeBtn.setEnabled(false);
+		
+		processLabel = new JLabel("Processing...Please wait a few moments!");
+		AudioPanelConstraints.gridy = 0;
+		AudioPanelConstraints.gridx = 3;
+		processLabel.setVisible(false);
+		add(processLabel, AudioPanelConstraints);
 	}
 
 	public static void setVideo(EmbeddedMediaPlayer runningVideo){
@@ -182,6 +190,7 @@ public class AudioPanel extends JPanel{
 		if (countBtnClick == 5){
 			addAudioBtn.setEnabled(false);
 		}
+		
 	}
 	
 	public static void enableAddAudio(){
@@ -191,6 +200,13 @@ public class AudioPanel extends JPanel{
 	
 	public static void enableMergeBtn(){
 		mergeBtn.setEnabled(true);
+	}
+	
+	public static void showProcessingMessage(){
+		processLabel.setVisible(true);
+	}
+	public static void hideProcessingMessage(){
+		processLabel.setVisible(false);
 	}
 
 }

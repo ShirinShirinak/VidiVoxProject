@@ -9,6 +9,8 @@ import java.io.InputStreamReader;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
+import gui.AudioPanel;
+
 public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 	Audio[] ListAudioToMerge = new Audio[5];
 	String videoPath = null;
@@ -60,12 +62,14 @@ public class MergeAudioAndVideo extends SwingWorker<Void, String>{
 		System.out.println(cmd);
 		mergeBuilder = new ProcessBuilder("/bin/bash","-c", cmd);
 		processMerge = mergeBuilder.start();
+		AudioPanel.showProcessingMessage();
 		System.out.println("in the background task - merging");
 
 
 
 		String directory = tempFolder.getAbsolutePath();
-		
+		processMerge.waitFor();
+		AudioPanel.hideProcessingMessage();
 		for (int i=0; i<audioCount; i++){
 			//cmd2+= " ";
 			//cmd2+="temp"+i+".mp3";
