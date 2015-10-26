@@ -62,6 +62,7 @@ public class PlayBackPanel extends JPanel{
 							video = PlayVideo.getVideo();
 							ProgressPanel.setVideo(video);
 							AudioPanel.setVideo(video);
+							MainPlayer.setVideoName("VidiVox - Playing: "+videoFile.getName());
 						}
 					}
 				} else {
@@ -121,6 +122,7 @@ public class PlayBackPanel extends JPanel{
 
 					if ((running == false)){
 						enableButtons();
+						
 						AudioPanel.enableAddAudio();
 						ProgressPanel.enableProgressBar();
 						play = true;
@@ -131,11 +133,12 @@ public class PlayBackPanel extends JPanel{
 						video = PlayVideo.getVideo();
 						ProgressPanel.setVideo(video);
 						AudioPanel.setVideo(video);
-
+						MainPlayer.setVideoName("VidiVox - Playing: "+videoFile.getName());
 						video.addMediaPlayerEventListener(new MediaPlayerEventAdapter(){
 
 							public void finished(MediaPlayer player){
 								running = false;
+								MainPlayer.setVideoName("VidiVox");
 								video.stop();
 							}
 						});

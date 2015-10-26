@@ -52,11 +52,13 @@ public class MainPlayer {
 	boolean isPaused = false; // cp to PBP
 	String[] audioStringList = new String[3];
 	OpenAudio audio1, audio2, audio3;
+	private static String videoName = "";
+	private static JFrame frame;
 	
 
 	public MainPlayer() {
 		//creating the JFrame
-		JFrame frame = new JFrame("VidiVox");
+		frame = new JFrame("VidiVox");
 
 
 		contentPane = new JPanel(new GridBagLayout());
@@ -337,7 +339,9 @@ public class MainPlayer {
 	
 	
 
-
+	public static void setVideoName(String name){
+		frame.setTitle(name);
+	}
 
 	public static JProgressBar getProgressBar(){
 		return bar;
