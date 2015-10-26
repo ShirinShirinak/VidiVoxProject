@@ -1,6 +1,7 @@
-package gui;
-import functionality.Audio;
-import functionality.MergeAudioAndVideo;
+package gui.edit.merge;
+import functionality.audio.Audio;
+import functionality.merge.MergeAudioAndVideo;
+import gui.edit.audio.OpenAudio;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 import java.awt.Dimension;
@@ -25,7 +26,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-public class AudioPanel extends JPanel{
+public class AudioVideoMergePanel extends JPanel{
 	Audio[] ListAudio = new Audio[5];
 	ArrayList<Audio> arrAudio = new ArrayList<Audio>();
 	private static EmbeddedMediaPlayer video;
@@ -41,7 +42,7 @@ public class AudioPanel extends JPanel{
 	int countBtnClick=0;
 	static JLabel processLabel;
 
-	public AudioPanel(){
+	public AudioVideoMergePanel(){
 		
 
 		setLayout(new GridBagLayout());

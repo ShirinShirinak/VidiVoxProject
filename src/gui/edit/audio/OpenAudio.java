@@ -1,4 +1,4 @@
-package gui;
+package gui.edit.audio;
 
 import java.awt.BorderLayout;
 import java.io.File;

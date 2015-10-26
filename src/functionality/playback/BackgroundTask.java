@@ -1,15 +1,16 @@
-package gui;
+package functionality.playback;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.SwingWorker;
 
+import gui.video_playback.PlayBackPanel;
 import uk.co.caprica.vlcj.player.embedded.EmbeddedMediaPlayer;
 
 public class BackgroundTask extends SwingWorker<Void, Integer>{
 	EmbeddedMediaPlayer videoFile;
-	protected BackgroundTask(EmbeddedMediaPlayer videoFile){
+	public BackgroundTask(EmbeddedMediaPlayer videoFile){
 		this.videoFile = videoFile;
 
 	}

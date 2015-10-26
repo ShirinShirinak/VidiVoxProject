@@ -1,4 +1,4 @@
-package gui;
+package gui.high_level_panels;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -26,9 +26,10 @@ import uk.co.caprica.vlcj.runtime.RuntimeUtil;
 import com.sun.jna.Native;
 import com.sun.jna.NativeLibrary;
 
-import functionality.MergeIt;
-import functionality.SaveTextToMp3;
-import functionality.SayItWithFestival;
+import functionality.audio.SaveTextToMp3;
+import functionality.audio.SayItWithFestival;
+import functionality.playback.BackgroundTask;
+import gui.edit.audio.OpenAudio;
 /**
  * 
  * MainPlayer is the main GUI component in the VIDIVOX prototype.

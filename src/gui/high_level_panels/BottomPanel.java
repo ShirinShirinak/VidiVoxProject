@@ -1,9 +1,13 @@
-package gui;
+package gui.high_level_panels;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
 import javax.swing.JPanel;
+
+import gui.edit.EditPanel;
+import gui.video_playback.PlayBackPanel;
+import gui.video_playback.ProgressPanel;
 
 public class BottomPanel extends JPanel{
 

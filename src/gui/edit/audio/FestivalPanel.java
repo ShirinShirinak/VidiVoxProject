@@ -1,4 +1,4 @@
-package gui;
+package gui.edit.audio;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import functionality.SaveTextToMp3;
-import functionality.SayItWithFestival;
+import functionality.audio.SaveTextToMp3;
+import functionality.audio.SayItWithFestival;
 
 public class FestivalPanel extends JPanel{
 	public FestivalPanel(){

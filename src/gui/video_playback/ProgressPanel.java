@@ -1,4 +1,4 @@
-package gui;
+package gui.video_playback;
 
 import java.awt.Color;
 import java.awt.Dimension;

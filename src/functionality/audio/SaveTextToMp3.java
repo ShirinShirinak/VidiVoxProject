@@ -1,4 +1,4 @@
-package functionality;
+package functionality.audio;
 import javax.swing.SwingWorker;
 
 public class SaveTextToMp3 extends SwingWorker<Void, Void> {

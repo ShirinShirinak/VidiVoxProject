@@ -1,4 +1,4 @@
-package gui;
+package gui.edit;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -17,10 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import functionality.Audio;
-import functionality.MergeIt;
-import functionality.SaveTextToMp3;
-import functionality.SayItWithFestival;
+import functionality.audio.Audio;
+import functionality.audio.SaveTextToMp3;
+import functionality.audio.SayItWithFestival;
+import gui.edit.audio.FestivalPanel;
+import gui.edit.merge.AudioVideoMergePanel;
 
 public class EditPanel extends JPanel{
 	
@@ -37,7 +38,7 @@ public class EditPanel extends JPanel{
 		add(festivalPanel, EditPanelConstrants);
 		
 		EditPanelConstrants.gridy = 1;
-		AudioPanel audioPanel = new AudioPanel();
+		AudioVideoMergePanel audioPanel = new AudioVideoMergePanel();
 		//audioPanel.setPreferredSize(new Dimension(300,300));
 		add(audioPanel, EditPanelConstrants);
 		

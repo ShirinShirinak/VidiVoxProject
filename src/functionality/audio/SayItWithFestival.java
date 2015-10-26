@@ -1,4 +1,4 @@
-package functionality;
+package functionality.audio;
 import javax.swing.SwingWorker;
 
 //similar to class SayItWithFestival in assignment 2.

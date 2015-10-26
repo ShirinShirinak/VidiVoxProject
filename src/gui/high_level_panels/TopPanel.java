@@ -1,4 +1,4 @@
-package gui;
+package gui.high_level_panels;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;

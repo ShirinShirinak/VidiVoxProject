@@ -1,4 +1,4 @@
-package gui;
+package gui.video_playback;
 import java.awt.BorderLayout;
 import java.io.File;
 
@@ -8,6 +8,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import gui.edit.merge.AudioVideoMergePanel;
 /**
  * 
  * OpenFile class opens a video file chosen by the user
@@ -30,7 +32,7 @@ public class OpenFile extends JPanel{
 		 if (returnVal == JFileChooser.APPROVE_OPTION){
 			 videoFile = fc.getSelectedFile();
 			 //System.out.println("you selected "+ videoFile.getName());
-			 AudioPanel.setVideoFile(videoFile);
+			 AudioVideoMergePanel.setVideoFile(videoFile);
 			 
 		 }
 		 

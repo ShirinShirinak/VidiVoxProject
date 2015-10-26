@@ -1,4 +1,4 @@
-package gui;
+package gui.video_playback;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -16,6 +16,10 @@ import javax.swing.JProgressBar;
 import javax.swing.JSlider;
 import javax.swing.Timer;
 
+import functionality.playback.BackgroundTask;
+import gui.edit.merge.AudioVideoMergePanel;
+import gui.high_level_panels.MainPlayer;
+import gui.high_level_panels.TopPanel;
 import uk.co.caprica.vlcj.component.EmbeddedMediaPlayerComponent;
 import uk.co.caprica.vlcj.player.MediaPlayer;
 import uk.co.caprica.vlcj.player.MediaPlayerEventAdapter;
@@ -61,7 +65,7 @@ public class PlayBackPanel extends JPanel{
 							new PlayVideo(file.getVideoFile(), mediaPlayerComponent);
 							video = PlayVideo.getVideo();
 							ProgressPanel.setVideo(video);
-							AudioPanel.setVideo(video);
+							AudioVideoMergePanel.setVideo(video);
 							MainPlayer.setVideoName("VidiVox - Playing: "+videoFile.getName());
 						}
 					}
@@ -123,7 +127,7 @@ public class PlayBackPanel extends JPanel{
 					if ((running == false)){
 						enableButtons();
 						
-						AudioPanel.enableAddAudio();
+						AudioVideoMergePanel.enableAddAudio();
 						ProgressPanel.enableProgressBar();
 						play = true;
 						running = true;
@@ -132,7 +136,7 @@ public class PlayBackPanel extends JPanel{
 						new PlayVideo(file.getVideoFile(), mediaPlayerComponent);
 						video = PlayVideo.getVideo();
 						ProgressPanel.setVideo(video);
-						AudioPanel.setVideo(video);
+						AudioVideoMergePanel.setVideo(video);
 						MainPlayer.setVideoName("VidiVox - Playing: "+videoFile.getName());
 						video.addMediaPlayerEventListener(new MediaPlayerEventAdapter(){
 
